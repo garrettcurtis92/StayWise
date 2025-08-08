@@ -1,5 +1,6 @@
 "use client";
 import Map from "react-map-gl/mapbox";
+import { Marker } from "react-map-gl";
 
 interface MapProps {
   latitude: number;
@@ -16,7 +17,13 @@ export default function ListingMap({ latitude, longitude, zoom = 10 }: MapProps)
         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         attributionControl={false}
         style={{ width: "100%", height: "100%" }}
-      />
+      >
+        <Marker latitude={latitude} longitude={longitude} anchor="bottom">
+          <div title="Listing location" className="text-2xl">
+            📍
+          </div>
+        </Marker>
+      </Map>
     </div>
   );
 }
