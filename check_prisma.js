@@ -1,0 +1,1 @@
+const { PrismaClient } = require('@prisma/client'); const prisma = new PrismaClient(); async function checkPrisma() { console.log('Available models:', Object.keys(prisma)); } checkPrisma().then(() => process.exit(0)).catch(err => { console.error(err); process.exit(1); });
