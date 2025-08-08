@@ -25,8 +25,8 @@ export async function POST(req: NextRequest) {
       description, 
       price, 
       location, 
-      latitude: lat, 
-      longitude: lng 
+      latitude, 
+      longitude 
     },
   });
 
