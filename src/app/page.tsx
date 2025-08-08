@@ -6,10 +6,9 @@ export default function Home() {
     <>
       <Link href="/listings/new" className="text-blue-600 hover:underline">
         + New Listing
+      </Link>
       <Link href="/listings" className="ml-4 text-blue-600 hover:underline">
-  View Listings
-</Link>
-
+        View Listings
       </Link>
       <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
