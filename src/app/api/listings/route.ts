@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN!;
 
 export async function POST(req: NextRequest) {
-  const { title, description, price, location } = await req.json();
+  const { title, description, price, location, lat, lng } = await req.json();
 
   // Validate inputs...
   
@@ -16,11 +16,18 @@ export async function POST(req: NextRequest) {
       `.json?access_token=${mapboxToken}&limit=1`
   );
   const geoData = await geoRes.json();
-  const [lng, lat] = geoData.features[0]?.center || [null, null];
+  const [longitude, latitude] = geoData.features[0]?.center || [null, null];
 
   // Create the listing in the DB with coords
   const listing = await prisma.listing.create({
-    data: { title, description, price, location, lat, lng },
+    data: { 
+      title, 
+      description, 
+      price, 
+      location, 
+      latitude: lat, 
+      longitude: lng 
+    },
   });
 
   return NextResponse.json(listing);

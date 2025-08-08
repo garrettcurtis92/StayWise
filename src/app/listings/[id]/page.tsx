@@ -2,10 +2,13 @@
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import ListingMap from "@/lib/Map";
 
 type Params = { params: { id: string } };
 
-export default async function ListingPage({ params: { id } }: Params) {
+export default async function ListingPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+
   // 1. Fetch the listing by ID
   const listing = await prisma.listing.findUnique({
     where: { id },
@@ -23,6 +26,16 @@ export default async function ListingPage({ params: { id } }: Params) {
       <p className="text-gray-700">{listing.description}</p>
       <div className="text-lg font-semibold">${listing.price.toFixed(2)}</div>
       <div className="text-sm text-gray-500">{listing.location}</div>
+      
+      {/* Add the map component */}
+      <div className="mt-6">
+        <h2 className="text-xl font-semibold mb-2">Location</h2>
+        <ListingMap 
+          latitude={listing.latitude} 
+          longitude={listing.longitude} 
+        />
+      </div>
+      
       <Link href="/listings" className="text-blue-600 hover:underline">
         ← Back to all listings
       </Link>

@@ -1,7 +1,7 @@
 // src/app/listings/page.tsx
 import Link from "next/link";
 import prisma from "@/lib/prisma";
-import Map from "@/lib/Map";
+import ListingMap from "@/lib/Map";
 // Use the Prisma-generated Listing type for accurate typings
 import type { Listing } from "@prisma/client";
 
@@ -20,21 +20,28 @@ export default async function ListingsPage() {
       ) : (
         <ul className="space-y-4">
           {listings.map((listing) => (
-            <li key={listing.id} className="border p-4 rounded hover:shadow">
-              <h2 className="text-xl font-semibold">
-                <Link href={`/listings/${listing.id}`} className="hover:underline">
-                  {listing.title}
-                </Link>
-              </h2>
+            <div key={listing.id} className="border rounded-lg p-4 shadow-sm">
+              <h2 className="text-xl font-semibold">{listing.title}</h2>
               <p className="text-gray-700">{listing.description}</p>
-              <div className="mt-2 text-sm text-gray-500">
-                <span>${listing.price.toFixed(2)}</span> • <span>{listing.location}</span>
+              <div className="text-lg font-semibold">${listing.price.toFixed(2)}</div>
+              <div className="text-sm text-gray-500 mb-4">{listing.location}</div>
+              
+              {/* Add map for each listing */}
+              <div className="mb-4">
+                <ListingMap 
+                  latitude={listing.latitude} 
+                  longitude={listing.longitude}
+                  zoom={12}
+                />
               </div>
-              {listing.lat != null && listing.lng != null && (
-  <Map latitude={listing.lat} longitude={listing.lng} zoom={12} />
-)}
-
-            </li>
+              
+              <Link
+                href={`/listings/${listing.id}`}
+                className="text-blue-600 hover:underline"
+              >
+                View Details
+              </Link>
+            </div>
           ))}
         </ul>
       )}
