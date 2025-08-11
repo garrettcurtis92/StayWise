@@ -7,10 +7,10 @@ import BookingForm from "./BookingForm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
-type Params = { params: { id: string } };
+type Params = { params: Promise<{ id: string }> };
 
 export default async function ListingPage({ params }: Params) {
-  const { id } = params;
+  const { id } = await params;
   const session = await getServerSession(authOptions);
 
   // 1. Fetch the listing by ID
