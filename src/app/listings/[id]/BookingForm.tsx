@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 
 type Props = { listingId: string };
 
@@ -14,7 +14,20 @@ export default function BookingForm({ listingId }: Props) {
   const [endDate, setEndDate] = useState("");
   const [error, setError] = useState("");
 
-  if (!session) return null; // We'll show a sign-in prompt in the server component.
+  if (!session) {
+    return (
+      <div className="p-4 border rounded bg-yellow-50">
+        <p className="mb-2">You must sign in to book.</p>
+        <button
+          type="button"
+          onClick={() => signIn()}
+          className="bg-blue-600 text-white px-4 py-2 rounded"
+        >
+          Sign in
+        </button>
+      </div>
+    );
+  }
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
