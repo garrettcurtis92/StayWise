@@ -1,9 +1,10 @@
-// src/app/listings/[id]/page.tsx
+// Listing detail page: uses container and unified Button.
 import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import ListingMap from "@/lib/Map";
 import BookingForm from "./BookingForm";
+import { Button } from "@/components/ui/button";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -25,11 +26,11 @@ export default async function ListingPage({ params }: Params) {
 
   // 3. Render the listing details
   return (
-    <main className="max-w-3xl mx-auto p-4 space-y-4">
+    <main className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-4">
       <h1 className="text-3xl font-bold">{listing.title}</h1>
-      <p className="text-gray-700">{listing.description}</p>
+      <p className="text-text/80">{listing.description}</p>
       <div className="text-lg font-semibold">${listing.price.toFixed(2)}</div>
-      <div className="text-sm text-gray-500">{listing.location}</div>
+      <div className="text-sm text-text/60">{listing.location}</div>
       
       {/* Add the map component */}
       <div className="mt-6">
@@ -46,16 +47,18 @@ export default async function ListingPage({ params }: Params) {
         {session ? (
           <BookingForm listingId={listing.id} />
         ) : (
-          <div className="p-4 bg-yellow-50 border rounded">
+          <div className="p-4 border rounded bg-surface">
             <p className="mb-2">You must be signed in to make a booking.</p>
-            <Link href="/api/auth/signin" className="text-blue-600 underline">Sign in</Link>
+            <Button asChild variant="primary">
+              <Link href="/api/auth/signin">Sign in</Link>
+            </Button>
           </div>
         )}
       </section>
 
-      <Link href="/listings" className="text-blue-600 hover:underline block mt-8">
-        ← Back to all listings
-      </Link>
+      <Button asChild variant="ghost" className="mt-8">
+        <Link href="/listings">← Back to all listings</Link>
+      </Button>
     </main>
   );
 }

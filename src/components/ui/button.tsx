@@ -1,3 +1,6 @@
+/* Button component: variants and focus styling using brand tokens. */
+"use client";
+
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -5,25 +8,25 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "focus-ring inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 aria-[busy=true]:opacity-50 aria-[busy=true]:cursor-wait",
   {
     variants: {
       variant: {
-        default: "bg-orange-500 text-white hover:bg-orange-600",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "underline-offset-4 hover:underline text-primary",
+        primary: "bg-brand-600 text-white hover:bg-brand-700",
+        secondary: "bg-brand-100 text-brand-700 hover:bg-brand-200",
+        outline: "border border-brand-600 text-brand-600 hover:bg-brand-50",
+        ghost: "text-brand-600 hover:bg-brand-50",
+        destructive: "bg-destructive-600 text-white hover:bg-destructive-700",
       },
       size: {
         default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        sm: "h-9 px-3 rounded-md",
+        lg: "h-11 px-8 rounded-md",
         icon: "h-10 w-10",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "primary",
       size: "default",
     },
   }
