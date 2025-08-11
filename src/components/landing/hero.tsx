@@ -6,8 +6,8 @@ export function Hero() {
   return (
     <section className="relative h-[80vh] flex items-center justify-center text-center">
       <Image
-        src="/images/hero.jpg"
-        alt="Tropical beach with palm trees"
+        src="/images/beach-hero.jpg"
+        alt="Palm trees and turquoise ocean on a sunny beach"
         fill
         priority
         className="object-cover"

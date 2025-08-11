@@ -7,21 +7,21 @@ const listings = [
     title: "Cozy Cabin Retreat",
     location: "Lakeview, OR",
     price: 120,
-    image: "/images/listing1.jpg",
+    image: "/images/cozy-cabin.jpg",
   },
   {
     id: 2,
     title: "Beachfront Bungalow",
     location: "Maui, HI",
     price: 220,
-    image: "/images/listing2.jpg",
+    image: "/images/beach-bungalow.jpg", // Updated to use provided image
   },
   {
     id: 3,
     title: "Urban Loft",
     location: "Austin, TX",
     price: 150,
-    image: "/images/listing3.jpg",
+    image: "/images/Urban-Loft.jpg",
   },
 ];
 
