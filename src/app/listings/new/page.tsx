@@ -1,8 +1,9 @@
-// src/app/listings/new/page.tsx
+// New listing form: uses container and shared Button component.
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function NewListingPage() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function NewListingPage() {
     location: "",
   });
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -23,6 +25,7 @@ export default function NewListingPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setLoading(true);
     try {
       const res = await fetch("/api/listings", {
         method: "POST",
@@ -41,14 +44,16 @@ export default function NewListingPage() {
       router.push("/");
     } catch (err: any) {
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <main className="max-w-md mx-auto p-4">
+    <main className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-bold mb-4">Create New Listing</h1>
       {error && (
-        <p className="mb-4 text-red-600" role="alert">
+        <p className="mb-4 text-destructive-600" role="alert">
           {error}
         </p>
       )}
@@ -62,7 +67,7 @@ export default function NewListingPage() {
             name="title"
             value={form.title}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded focus-ring"
             required
           />
         </div>
@@ -75,7 +80,7 @@ export default function NewListingPage() {
             name="description"
             value={form.description}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded focus-ring"
             required
           />
         </div>
@@ -90,7 +95,7 @@ export default function NewListingPage() {
             step="0.01"
             value={form.price}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded focus-ring"
             required
           />
         </div>
@@ -103,16 +108,13 @@ export default function NewListingPage() {
             name="location"
             value={form.location}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded focus-ring"
             required
           />
         </div>
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-        >
+        <Button type="submit" className="w-full" disabled={loading} aria-busy={loading}>
           Submit
-        </button>
+        </Button>
       </form>
     </main>
   );
