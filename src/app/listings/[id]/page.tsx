@@ -3,11 +3,15 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import ListingMap from "@/lib/Map";
+import BookingForm from "./BookingForm";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 type Params = { params: { id: string } };
 
-export default async function ListingPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default async function ListingPage({ params }: Params) {
+  const { id } = params;
+  const session = await getServerSession(authOptions);
 
   // 1. Fetch the listing by ID
   const listing = await prisma.listing.findUnique({
@@ -36,7 +40,20 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
         />
       </div>
       
-      <Link href="/listings" className="text-blue-600 hover:underline">
+      {/* Booking section */}
+      <section className="mt-8 border-t pt-6">
+        <h2 className="text-2xl font-semibold mb-4">Book this stay</h2>
+        {session ? (
+          <BookingForm listingId={listing.id} />
+        ) : (
+          <div className="p-4 bg-yellow-50 border rounded">
+            <p className="mb-2">You must be signed in to make a booking.</p>
+            <Link href="/api/auth/signin" className="text-blue-600 underline">Sign in</Link>
+          </div>
+        )}
+      </section>
+
+      <Link href="/listings" className="text-blue-600 hover:underline block mt-8">
         ← Back to all listings
       </Link>
     </main>

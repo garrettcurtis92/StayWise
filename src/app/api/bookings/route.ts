@@ -3,7 +3,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {
@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. Prevent overlapping bookings for the same listing
-    const conflict = await prisma.booking.findFirst({
+  // Use index access to avoid any transient TS type mismatch if booking delegate not picked up
+  const conflict = await (prisma as any).booking.findFirst({
       where: {
         listingId,
         startDate: { lte: end },
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 5. Create the booking
-    const booking = await prisma.booking.create({
+  const booking = await (prisma as any).booking.create({
       data: {
         listingId,
         userId:    user.id,

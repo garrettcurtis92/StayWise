@@ -1,26 +1,24 @@
-// src/lib/auth.ts
-import { NextAuthOptions } from "next-auth";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import EmailProvider from "next-auth/providers/email";
-import GithubProvider from "next-auth/providers/github";
+import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import prisma from "@/lib/prisma";
+import GitHubProvider from "next-auth/providers/github";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+// If your Prisma client is exported from src/lib/db.ts, ensure that file exists and exports 'prisma'.
+// Otherwise, import directly from @prisma/client as below:
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
-export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+export const authOptions = {
   providers: [
-    EmailProvider({
-      server: process.env.EMAIL_SERVER!,
-      from: process.env.EMAIL_FROM!,
-    }),
-    GithubProvider({
-      clientId: process.env.GITHUB_ID!,
-      clientSecret: process.env.GITHUB_SECRET!,
-    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
+    GitHubProvider({
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
+    }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  adapter: PrismaAdapter(prisma), // <-- This must use your Prisma client
+  session: { strategy: "database" as const },
+  // ...other options
 };
